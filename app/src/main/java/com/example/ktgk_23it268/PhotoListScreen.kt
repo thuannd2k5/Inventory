@@ -6,8 +6,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -18,13 +21,16 @@ fun PhotoListScreen(viewModel: PhotoViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(82.dp)) // Dịch tiêu đề xuống
+
+        Spacer(modifier = Modifier.height(40.dp))
         Text(
             text = "Photo URLs from API",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = 12.dp)
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
         )
 
         LazyColumn(
@@ -48,9 +54,9 @@ fun PhotoItem(photo: Photo) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Thêm đổ bóng nhẹ
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "ID: ${photo.id}", style = MaterialTheme.typography.bodyMedium)
+            Text(text = "ID: ${photo.id}",fontSize = 20.sp)
             Text(text = "Title: ${photo.title}", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "URL: ${photo.url}", color = MaterialTheme.colorScheme.primary)
+            Text(text = "URL: ${photo.url}", color = MaterialTheme.colorScheme.primary,fontSize = 18.sp)
         }
     }
 }

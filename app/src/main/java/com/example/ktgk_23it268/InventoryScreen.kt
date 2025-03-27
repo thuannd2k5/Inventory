@@ -9,7 +9,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,10 +33,10 @@ fun InventoryScreen(viewModel: InventoryViewModel = viewModel()) {
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(82.dp))
+        Spacer(modifier = Modifier.height(22.dp))
         Text(
             text = "Inventory Management",
-            fontSize = 24.sp,
+            fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
         )
@@ -62,9 +64,25 @@ fun InventoryScreen(viewModel: InventoryViewModel = viewModel()) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
+        var showDialog by remember { mutableStateOf(false) }
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Warning") },
+                text = { Text("Please fill in all fields before adding!") },
+                confirmButton = {
+                    Button(onClick = { showDialog = false }) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+
         Button(
             onClick = {
-                if (itemName.isNotBlank() && quantity.isNotBlank() && supplier.isNotBlank()) {
+                if (itemName.isBlank() || quantity.isBlank() || supplier.isBlank()) {
+                    showDialog = true
+                } else {
                     if (selectedItem == null) {
                         viewModel.addItem(Inventory(item_name = itemName, quantity = quantity.toInt(), supplier = supplier))
                     } else {
@@ -77,31 +95,56 @@ fun InventoryScreen(viewModel: InventoryViewModel = viewModel()) {
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)
         ) {
-            Text(if (selectedItem == null) "Add Item" else "Update Item", color = Color.White)
+            Text(if (selectedItem == null) "Add Item" else "Update Item", color = Color.Black)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(8.dp)
+        ) {
             items(inventory) { item ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(vertical = 6.dp) // Tạo khoảng cách giữa các Card
+                        .shadow(4.dp, shape = MaterialTheme.shapes.medium), // Hiệu ứng đổ bóng nhẹ
+                    shape = MaterialTheme.shapes.medium, // Bo góc mềm mại
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Column(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
+                        modifier = Modifier.padding(16.dp)
                     ) {
-                        Text(text = "Name: ${item.item_name.ifBlank { "Unknown" }}", fontWeight = FontWeight.Bold)
-                        Text(text = "Quantity: ${item.quantity}", fontSize = 14.sp, color = Color.Gray)
-                        Text(text = "Supplier: ${item.supplier.ifBlank { "Unknown" }}", fontSize = 14.sp, color = Color.Gray)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row {
+                        Text(
+                            text = "ID: ${item.id}",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Name: ${item.item_name.ifBlank { "Unknown" }}",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = 16.sp
+                        )
+                        Text(
+                            text = "Quantity: ${item.quantity}",
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Text(
+                            text = "Supplier: ${item.supplier.ifBlank { "Unknown" }}",
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween // Giãn cách 2 nút đều nhau
+                        ) {
                             Button(
                                 onClick = {
                                     itemName = item.item_name
@@ -109,14 +152,16 @@ fun InventoryScreen(viewModel: InventoryViewModel = viewModel()) {
                                     supplier = item.supplier
                                     selectedItem = item
                                 },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
+                                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.teal_200)),
+                                modifier = Modifier.weight(1f) // Chia đều không gian
                             ) {
                                 Text("Update", color = Color.White)
                             }
-                            Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(8.dp)) // Khoảng cách giữa 2 nút
                             Button(
                                 onClick = { viewModel.deleteItem(item) },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.red)),
+                                modifier = Modifier.weight(1f)
                             ) {
                                 Text("Delete", color = Color.White)
                             }
@@ -125,5 +170,6 @@ fun InventoryScreen(viewModel: InventoryViewModel = viewModel()) {
                 }
             }
         }
+
     }
 }
