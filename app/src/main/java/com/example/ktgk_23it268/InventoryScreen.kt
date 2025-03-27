@@ -31,6 +31,7 @@ fun InventoryScreen(viewModel: InventoryViewModel = viewModel()) {
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(82.dp))
         Text(
             text = "Inventory Management",
             fontSize = 24.sp,

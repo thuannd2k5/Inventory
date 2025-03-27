@@ -23,7 +23,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MaterialTheme {
-                InventoryScreen(viewModel = inventoryViewModel)
+//                InventoryScreen(viewModel = inventoryViewModel)
+                PhotoListScreen(viewModel = PhotoViewModel())
             }
         }
     }
