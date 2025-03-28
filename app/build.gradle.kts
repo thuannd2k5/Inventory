@@ -61,9 +61,11 @@ dependencies {
     kapt("androidx.room:room-compiler:2.5.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+
     implementation("androidx.room:room-runtime:2.6.1") // Cập nhật nếu cần
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1") // Bắt buộc cho Room
+
     implementation ("androidx.compose.material3:material3:1.2.0")
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
 

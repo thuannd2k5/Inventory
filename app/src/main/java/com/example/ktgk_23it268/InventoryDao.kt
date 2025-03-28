@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface InventoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(item: Inventory)  // Xóa kiểu trả về
+    suspend fun insert(item: Inventory)
 
     @Query("SELECT * FROM inventory ORDER BY id DESC")
     fun getAll(): Flow<List<Inventory>>
 
     @Update
-    suspend fun update(item: Inventory)  // Xóa kiểu trả về
+    suspend fun update(item: Inventory)
 
     @Delete
-    suspend fun delete(item: Inventory)  // Xóa kiểu trả về
+    suspend fun delete(item: Inventory)
 }

@@ -9,7 +9,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
-data class Photo(val id: Int, val title: String, val url: String)
+data class Photo(
+    val id: Int,
+    val title: String,
+    val url: String
+)
 
 interface PhotoApiService {
     @GET("photos")

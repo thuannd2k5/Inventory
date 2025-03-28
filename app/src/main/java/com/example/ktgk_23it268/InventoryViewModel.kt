@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 
 class InventoryViewModel(application: Application) : AndroidViewModel(application) {
     private val dao = InventoryDB.getDatabase(application).inventoryDao()
-    val inventoryList: Flow<List<Inventory>> = dao.getAll()  // Live cập nhật
+    val inventoryList: Flow<List<Inventory>> = dao.getAll()
 
     fun addItem(item: Inventory) = viewModelScope.launch {
         if (validateItem(item)) {

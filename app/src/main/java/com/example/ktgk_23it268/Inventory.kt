@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "inventory")
 data class Inventory(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,  // Tự động tăng ID
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val item_name: String,
     val quantity: Int,
     val supplier: String
